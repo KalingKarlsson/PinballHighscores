@@ -50,11 +50,16 @@ const AddHighscoreDialog: React.FC<Props> = ({ data }: Props) => {
           console.log(error);
         }
 
-        setNewScore({ name: "", score: "" });
         handleClose();
+
+        if (highscores.some((user) => user.score !== newScore.score)) {
+          alert("You did not get into the highscore list, better luck next time");
+        }
+
+        setNewScore({ name: "", score: "" });
       }
     } else {
-      alert('All fields must be filled in')
+      alert("All fields must be filled in");
     }
   };
 
@@ -66,7 +71,6 @@ const AddHighscoreDialog: React.FC<Props> = ({ data }: Props) => {
       ...prev,
       [propertyName]: event.target.value,
     }));
-
 
   return (
     <div>
@@ -91,7 +95,7 @@ const AddHighscoreDialog: React.FC<Props> = ({ data }: Props) => {
               variant="standard"
               value={newScore?.name}
               onChange={(e) => inputChangeHandler(e, "name")}
-              inputProps={{ maxLength: 25}}
+              inputProps={{ maxLength: 25 }}
               required
             />
             <TextField
