@@ -1,25 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container, ImageListItem } from "@mui/material";
+import "./App.css";
+import PinBallContextProvider from "./Context/PinBallContextProvider";
+import Highscores from "./Highscores";
 
 function App() {
   return (
-    <div className="App">
+    <Container className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p className="title-style">PinBall HighScores</p>
       </header>
-    </div>
+      <PinBallContextProvider>
+        <Highscores />
+      </PinBallContextProvider>
+      <ImageListItem>
+        <img src="https://cdn.shopify.com/s/files/1/0342/1649/products/Demolition-man-pinball-topper.jpg?v=1571438681" />
+      </ImageListItem>
+    </Container>
   );
 }
 
