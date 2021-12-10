@@ -34,7 +34,7 @@ const AddHighscoreDialog: React.FC<Props> = ({ data }: Props) => {
       if (fetchedHighscores) {
         highscores = [...fetchedHighscores, newScore];
 
-        highscores.sort((a, b) => (parseInt(a.score) < parseInt(b.score) ? 1 : -1));
+        highscores.sort((a, b) => (parseInt(a.score) <= parseInt(b.score) ? 1 : -1));
 
         if (highscores.length > 5) {
           highscores.pop();
@@ -42,19 +42,20 @@ const AddHighscoreDialog: React.FC<Props> = ({ data }: Props) => {
         setFetchedHighscores(highscores);
         pinBallContext.setHighscores(fetchedHighscores);
 
-        try {
-          await updateDoc(documentRef, {
-            highscores,
-          });
-        } catch (error) {
-          console.log(error);
+        if (JSON.stringify(highscores) !== JSON.stringify(fetchedHighscores)) {
+          try {
+            await updateDoc(documentRef, {
+              highscores,
+            });
+            console.log("updated");
+          } catch (error) {
+            console.log(error);
+          }
+        } else {
+          alert("You did not get into the highscore list, better luck next time");
         }
 
         handleClose();
-
-        if (highscores.some((user) => user.score !== newScore.score)) {
-          alert("You did not get into the highscore list, better luck next time");
-        }
 
         setNewScore({ name: "", score: "" });
       }
@@ -74,7 +75,7 @@ const AddHighscoreDialog: React.FC<Props> = ({ data }: Props) => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button style={{ marginBottom: 14 }} variant="outlined" onClick={handleClickOpen}>
         Add new Highscore!
       </Button>
       <Dialog open={open} onClose={handleClose}>
@@ -102,7 +103,7 @@ const AddHighscoreDialog: React.FC<Props> = ({ data }: Props) => {
               margin="dense"
               id="score"
               label="Score"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
               value={newScore?.score}
